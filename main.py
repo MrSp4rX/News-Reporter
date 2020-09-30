@@ -11,12 +11,12 @@ raw_text = response.json()
 
 # print(raw_text)
 # print(raw_text['totalResults'])
-no = 1
+no = 0
 for i in range(10):
 	if raw_text['status'] == "ok":
-		print("+++++++++++++++++++++++ News No. "+str(no)+" +++++++++++++++++++++++")
+		print("+++++++++++++++++++++++ News No. "+str(no+1)+" +++++++++++++++++++++++")
 		articles = raw_text['articles']
-		article = articles[0]
+		article = articles[no]
 		source = article['source']
 		# print(article.keys())
 		if str(source) == "None":
@@ -40,8 +40,13 @@ for i in range(10):
 		print(".\n\nDescription:")
 		print(str(article['description'])+".\n")
 		con = article['content']
-		con = re.compile(r'<[^>]+>').sub('', con)
-		con = con.replace('"', '')
+		if con != None:
+			con = re.compile(r'<[^>]+>').sub('', con)
+			con = con.replace('"', '')
+		# elif con == "None":
+		# 	continue
+		else:
+			pass
 		print("Content:")
 		print(con)
 		time = article['publishedAt']
@@ -50,7 +55,7 @@ for i in range(10):
 		pwd = os.getcwd()
 		des = str(article['description'])
 		notification.notify(
-			title = str(no)+'. Top News',
+			title = str(no+1)+'. Top News',
 			message = des[0:225],
 			app_icon = os.getcwd()+"\\news.ico",
 			timeout = 5
